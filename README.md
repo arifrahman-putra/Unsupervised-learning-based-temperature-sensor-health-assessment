@@ -9,18 +9,26 @@ An Isolation Forest outlier detection implementation for temperature sensor and 
 The system operates by:
 
 1. **Connecting to a local PostgreSQL database table** to retrieve raw temperature sensor recording.
-2. **Feature extraction** based on how the temperature data fluctuates every hour:
+2. **Feature extraction** based on how the temperature data fluctuates every processed hour:
    - num_data: the number of raw temperature data recorded each hour
    - sampling_rate: the number of raw temperature data recorded each hour
-   - range: recorded temperature  range (max-min) in each hour
-   - standard_deviation of temperature recorded data wihin an hour
-   - covar: coefficient of variation (standard_deviationb/mean)
-
+   - range: recorded temperature range (=max temp-min temp) in each hour
+   - standard_deviation: std of temperature recorded data in each hour
+   - covar: coefficient of variation (=standard_deviation/mean) in each hour
+   - max_rate: maximum absolute temperature change (celsius/minute) in each hour
+   - min_rate: minimum absolute temperature change (celsius/minute) in each hour
+   - rate_range: max_rate-min_rate
+   - osc-freq: the number of temperature change direction (/minute) in each hour
+   - var_score: the percentage of temperature change that exceeds the threshold (=0.031 celsius/minute) in each hour
+   - hour_index: the index of hour in start_time (UTC+7) that may inform about the solar irradiance or lighting effects on the ambient temperature recorded
 
    non feature variables:
    - start_time: datetime (hour) object that shows the starting hour of each recorded temperature data time-window
    - availability_status: flag variable that shows whether there are at least 3 recorded temperature data in each hour; if the availability_status = 0 (there are less than 3 recorded temperature data in an hour), then the extracted features for that hour are considered invalid and filled with 0s except for the hour_index
-   
+
+3. **Feature correlation matrix plot** using Pearson's correlation coefficient method to look for unique pairs (lowly correlated features)
+4. **Develop Isolation Forest Model** with 400 ensemble estimators, automatic maximum sample selection, and outlier percentage of 0.1 (the model predicts 10 percent of outliers from the whole prediction set)
+5. 
    
 
 
