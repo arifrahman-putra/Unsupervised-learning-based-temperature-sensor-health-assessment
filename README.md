@@ -43,9 +43,9 @@ The system operates by:
 | `README.md`                                            | This documentation                              |
 | `flowchart.png`                                        | Flowchart image of this project                 |
 
-> **Note:** Station inventory XML files are **not included** in this repository due to data-sharing restrictions.  
-> You must provide your own inventory files at:  
-> `/path/to/inventory/{StationID}.xml`
+> **Note:** actual raw dataset file is not included due to data-sharing restrictions.  
+> You must provide your own dataset:  
+> ``
 
 
 ## 📊 Database Tables
