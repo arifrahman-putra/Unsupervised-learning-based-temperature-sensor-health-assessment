@@ -1,0 +1,8 @@
+psycopg2==2.9.10
+pandas==2.2.0
+matplotlib==3.9.1
+seaborn==0.13.2
+numpy==1.26.4
+scikit-learn==1.5.1
+sqlaalchemy==1.4.52
+
