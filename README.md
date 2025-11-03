@@ -10,16 +10,17 @@ The system operates by:
 
 1. **Connecting to a local PostgreSQL database table** to retrieve raw temperature sensor recording.
 2. **Feature extraction** based on how the temperature data fluctuates every hour:
-   a. num_data: the number of raw temperature data recorded each hour
-   b. sampling_rate: the number of raw temperature data recorded each hour
-   c. range: recorded temperature  range (max-min) in each hour
-   d. standard_deviation of temperature recorded data wihin an hour
-   e. covar: coefficient of variation (standard_deviationb/mean)
+   - num_data: the number of raw temperature data recorded each hour
+   - sampling_rate: the number of raw temperature data recorded each hour
+   - range: recorded temperature  range (max-min) in each hour
+   - standard_deviation of temperature recorded data wihin an hour
+   - covar: coefficient of variation (standard_deviationb/mean)
 
 
    non feature variables:
-   a. start_time: datetime (hour) object that shows the starting hour of each recorded temperature data time-window
-   b. availability_status: flag variable that shows whether there are at least 3 recorded temperature data in each hour. if the availability_status = 0 (there are less than 3 recorded temperature data in an hour), then the extracted features for that hour are considered invalid and filled with 0s except for the hour_index.
+   - start_time: datetime (hour) object that shows the starting hour of each recorded temperature data time-window
+   - availability_status: flag variable that shows whether there are at least 3 recorded temperature data in each hour; if the availability_status = 0 (there are less than 3 recorded temperature data in an hour), then the extracted features for that hour are considered invalid and filled with 0s except for the hour_index
+   
    
 
 
