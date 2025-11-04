@@ -54,58 +54,58 @@ daily diagnosis table (df_daily) ==> 'tempsensor_daily_healthscore'
 
 ## 📊 Database Tables
 
-The system uses PostgreSQL database with the following table structures:
+The system takes raw temperature sensor from a PostgreSQL table (which you have to provide), and also stores the result into Postgres tables with the following table structures:
 
+### temperature_sensor_recording
 
-### Equipments Table
-
-Stores information about seismic monitoring equipment.
+Storesthe recorded temperature sensor readings with the corresponding timestamps.
 
 ```sql
 CREATE TABLE Equipments (
-    equipmentid TEXT PRIMARY KEY,
-    stationid TEXT,
-    name TEXT,
-    status TEXT,
-    channel TEXT
+    time_received TIMESTAMP PRIMARY KEY,
+    temp_1 REAl,
+    temp_2 REAL,
 );
 ```
 
 **Example Data:**
 
-| equipmentid | stationid | name          | status | channel |
-|-------------|-----------|---------------|--------|---------|
-| 01          | ABC       | Seismometer   | Active | S       |
-| 02          | DEF       | Accelerometer | Active | K       |
-| 03          | GHI       | Seismometer   | Dead   | B       |
-| 04          | IJK       | Seismometer   | Active | S       |
+| time_received          | temp_1    | temp_2     | 
+|------------------------|-----------|------------|
+|2024-01-01 11:35:27     | 27.34     | 32.34      | 
+|2024-01-01 11:36:27     | 27.65     | 32.53      | 
+|2024-01-01 11:37:27     | 27.89     | 32.76      | 
+> **Note:** temp_1 and temp_2 may come from different sensors, but the python script demo in Temperature Sensor Health Assesment_Postgres.ipynb uses temp_1.  
 
 
-### Health_Status Table
+### tempsensor_hourly_healthstatus Table
 
-Records diagnostic results for each channel of equipment.
+stores the hourly assesment/diagnosis of the recorded data quality.
 
 ```sql
 CREATE TABLE Health_Status (
-    TimeStamp TEXT PRIMARY KEY,
-    TimeIndex TEXT,
-    StationID TEXT,
-    EquipmentID TEXT,
-    Channel TEXT,
-    HealthStatus INTEGER,
-    Diagnosis TEXT,
-    Description TEXT
+    start_time TIMESTAMP PRIMARY KEY,
+    hour_index INTEGER,
+    num_data REAL,
+    sampling_rate REAL,
+    availability_status REAL,
+    .
+    .
+    .
+    health_status INTEGER,
+    anomaly_score REAL,
+    date DATE
 );
 ```
 
 **Example Data:**
 
-| TimeStamp           | TimeIndex           | StationID | EquipmentID | Channel | HealthStatus | Diagnosis | Description           |
-|---------------------|---------------------|-----------|-------------|---------|--------------|-----------|-----------------------|
-| 2025-04-10T12:35:00 | 2025-04-10T12:00:00 | ABC       | 01          | SHE     | 1            | Normal    | Earthquake occurrence |
-| 2025-04-10T12:35:06 | 2025-04-10T12:00:00 | ABC       | 01          | SHN     | 1            | Normal    | Earthquake occurrence |
-| 2025-04-10T12:35:12 | 2025-04-10T12:00:00 | ABC       | 01          | SHZ     | 1            | Normal    | Earthquake occurrence |
-| 2025-04-10T12:35:36 | 2025-04-10T12:00:00 | IJK       | 04          | SHE     | 0            | LM        | Diagnosis result      |
+| start_time          | hour_index  | features  | health_status | Channel | HealthStatus | Diagnosis | Description           |
+|---------------------|-------------|-----------|---------------|---------|--------------|-----------|-----------------------|
+| 2024-01-01 11:00:00 | 18          | .....     | 0             | 0.34    | 1            | Normal    | Earthquake occurrence |
+| 2024-01-01 12:00:00 | 19          | .....     | 1             | 0.89    | 1            | Normal    | Earthquake occurrence |
+| 2024-01-01 13:00:00 | 20          | .....     | 1             | SHZ     | 1            | Normal    | Earthquake occurrence |
+
 
 > Note: LM = "Locked Mass" seismometer fault type
 
