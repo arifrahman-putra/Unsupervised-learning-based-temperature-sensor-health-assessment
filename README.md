@@ -100,48 +100,39 @@ CREATE TABLE Health_Status (
 
 **Example Data:**
 
-| start_time          | hour_index  | features  | health_status | Channel | HealthStatus | Diagnosis | Description           |
-|---------------------|-------------|-----------|---------------|---------|--------------|-----------|-----------------------|
-| 2024-01-01 11:00:00 | 18          | .....     | 0             | 0.34    | 1            | Normal    | Earthquake occurrence |
-| 2024-01-01 12:00:00 | 19          | .....     | 1             | 0.89    | 1            | Normal    | Earthquake occurrence |
-| 2024-01-01 13:00:00 | 20          | .....     | 1             | SHZ     | 1            | Normal    | Earthquake occurrence |
-
-
-> Note: LM = "Locked Mass" seismometer fault type
+| start_time          | hour_index  |num_data |sampling_rate |availability_status |other features | health_status | anomaly_score | date       |
+|---------------------|-------------|---------|--------------|--------------------|---------------|---------------|---------------|------------|
+| 2024-01-01 11:00:00 | 18          |x.xx     |x.xx          |0                   | x.xx          | 1             | x.xx          | 2024-01-01 |
+| 2024-01-01 12:00:00 | 19          |x.xx     |x.xx          |1                   | x.xx          | 0             | x.xx          | 2024-01-01 |
+| 2024-01-01 13:00:00 | 20          |x.xx     |x.xx          |1                   | x.xx          | 1             | x.xx          | 2024-01-01 |
 
 
 ### Daily_Report Table
 
-Summarizes equipment health on a daily basis.
+Summarizes transmission system and temperature sensor health on a daily basis.
 
 ```sql
 CREATE TABLE Daily_Report (
-    TimeStamp TEXT PRIMARY KEY,
-    DayIndex TEXT,
-    StationID TEXT,
-    EquipmentID TEXT,
-    HealthScore FLOAT
+    date DATE PRIMARY KEY,
+    transmission_hs REAL,
+    transmission_hs REAL,
 );
 ```
 
 **Example Data:**
 
-| TimeStamp           | DayIndex   | StationID | EquipmentID | HealthScore |
-|---------------------|------------|-----------|-------------|-------------|
-| 2025-04-10T23:35:00 | 2025-04-10 | ABC       | 01          | 75.00       |
-| 2025-04-10T23:35:06 | 2025-04-10 | GHI       | 03          | 50.00       |
-| 2025-04-10T23:35:12 | 2025-04-10 | IJK       | 04          | 33.33       |
+| date       |transmisison_hs | sensor_hs | 
+|------------|----------------|-----------|
+| 2025-01-10 | 70.83          | 83.83     |
+| 2025-01-10 | 75.00          | 91.67     | 
+| 2025-01-10 | 50.00          | 66.67     |
 
 
 ## 🚀 Usage
 
-1. Ensure your PostgreSQL database is running and the `Health_Status` and `Daily_Report` tables are set up.  
-2. Make sure your station XML inventory files are available in `/path/to/inventory/{StationID}.xml`.  
-3. Run the diagnosis script:
+1. Ensure your PostgreSQL database is running and the `temperature_sensor_recording` table is set up.  
+2. Run the temperature sensor health assesment script:
 
-```bash
-python seismometer_diagnosis.py
-```
-
+Temperature Sensor Health Assesment_Postgres.ipynb
 
 
