@@ -28,7 +28,7 @@ The system operates by:
 
 3. **Feature correlation matrix plot** using Pearson's correlation coefficient method to look for unique pairs (lowly correlated features)
 4. **Develop Isolation Forest Model** with 400 ensemble estimators, automatic maximum sample selection, and outlier percentage of 0.1 (the model predicts 10 percent of outliers from the whole prediction set)
-5. 
+5. **Train model and predict the train dataset** Since the IF is an unsupervised model, there is no dataset splitting for train and test, (i.e. the standardized train dataset is also used as test dataset). The anomaly score for each test sample is normalized and saved as "anomaly_scores", while the prediction labels (1: "Majority class", -1: "Outlier") are saved as "pred_labels".  
    
 
 
