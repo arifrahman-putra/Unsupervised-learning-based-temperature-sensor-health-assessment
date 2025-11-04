@@ -26,12 +26,16 @@ The system operates by:
    - start_time: datetime (hour) object that shows the starting hour of each recorded temperature data time-window
    - availability_status: flag variable that shows whether there are at least 3 recorded temperature data in each hour; if the availability_status = 0 (there are less than 3 recorded temperature data in an hour), then the extracted features for that hour are considered invalid and filled with 0s except for the hour_index
 
-3. **Feature correlation matrix plot** using Pearson's correlation coefficient method to look for unique pairs (lowly correlated features)
-4. **Develop Isolation Forest Model** with 400 ensemble estimators, automatic maximum sample selection, and outlier percentage of 0.1 (the model predicts 10 percent of outliers from the whole prediction set)
-5. **Train model and predict the train dataset** Since the IF is an unsupervised model, there is no dataset splitting for train and test, (i.e. the standardized train dataset is also used as test dataset). The anomaly score for each test sample is normalized and saved as "anomaly_scores", while the prediction labels (1: "Majority class", -1: "Outlier") are saved as "pred_labels".  
+3. **Feature correlation matrix plot** using Pearson's correlation coefficient method to look for unique pairs (lowly correlated features).
+4. **Develop Isolation Forest Model** with 400 ensemble estimators, automatic maximum sample selection, and outlier percentage of 0.1 (the model predicts 10 percent of outliers from the whole prediction set).
+5. **Train model and predict the train dataset** Since the IF is an unsupervised model, there is no dataset splitting for train and test, (i.e. the standardized train dataset is also used as test dataset). The anomaly score for each test sample is normalized and saved as "anomaly_scores", while the prediction labels (1: "Majority class", -1: "Outlier") are saved as "pred_labels". These variables are the associated with the complete hourly dataset that comprises both availability statuses. For rows with availability_status==0, the health_status column is filled with 1 (assuming the anomaly only adresses the transmission system, not the sensor health status), while the anomaly_score is set to 0 (marking invalid hourly temperature sensor diagnosis). Conversely, for rows with availability_status==0, the health_status column is filled with 1 ("Normal") if the pred label == 1, and 0 ("Abnormal") if the pred label is -1. 
+6. Create a daily scoring table for transmission health status (transmission_hs) and temperature sensor health status (sensor_hs) based on the percentage of availability _status and health_status in a day respectively.
+7. store the results as PostgreSQL database: 
+
+hourly diagnosis table (df_hourly) ==> 'tempsensor_hourly_healthstatus'
+
+daily diagnosis table (df_daily) ==> 'tempsensor_daily_healthscore'
    
-
-
 
 
 ## 📦 Files in This Repo
@@ -45,7 +49,7 @@ The system operates by:
 
 > **Note:** actual raw dataset file is not included due to data-sharing restrictions.  
 > You must provide your own dataset:  
-> ``
+> `temperature_sensor_recording`
 
 
 ## 📊 Database Tables
